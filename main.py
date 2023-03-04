@@ -1,4 +1,62 @@
-class String:
+from abc import ABC, abstractmethod
+
+
+class BaseString(ABC):
+    @abstractmethod
+    def clear(self):
+        pass
+
+    @abstractmethod
+    def __len__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other: str):
+        pass
+
+    @abstractmethod
+    def __iadd__(self, other: str):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __getitem__(self, idx: int):
+        pass
+
+
+class HashString(BaseString):
+    def __init__(self, chars: str = ''):
+        self._chars = chars
+        self._hash = hash(chars)
+
+    def clear(self):
+        self._chars = ''
+        self._hash = None
+
+    def __len__(self):
+        return len(self._chars)
+
+    def __add__(self, other: str):
+        self._chars += other
+        self._hash = hash(self._chars)
+        return self._chars
+
+    def __iadd__(self, other: str):
+        self._chars += other
+        self._hash = hash(self._chars)
+        return self._chars
+
+    def __str__(self):
+        return str(self._hash)
+
+    def __getitem__(self, idx: int):
+        return self._chars[idx]
+
+
+class String(BaseString):
     def __init__(self, chars: str = ''):
         self._chars = chars
 
@@ -24,7 +82,7 @@ class String:
 
 
 class StringManager:
-    def __init__(self, string: String):
+    def __init__(self, string: BaseString):
         self._string = string
 
     def append(self, char: str):
@@ -49,10 +107,10 @@ class StringManager:
 
 
 class Stack:
-    def __init__(self, elem: String | StringManager):
+    def __init__(self, elem: BaseString | StringManager):
         self._stack = [elem]
 
-    def append(self, item: String | StringManager):
+    def append(self, item: BaseString | StringManager):
         self._stack.append(item)
 
     def delete(self):
@@ -72,7 +130,9 @@ class Stack:
 
 if __name__ == '__main__':
     res_string = String('1234567')
+    hash_string = HashString('123456')
     string_manager = StringManager(res_string)
+    hash_string_manager = StringManager(hash_string)
     stack = Stack(res_string)
     print('StringManager ' + '-' * 100)
     print('String - ' + string_manager.string)
@@ -81,6 +141,13 @@ if __name__ == '__main__':
     print('Append(S) - ' + string_manager.string)
     print('Get item by index - ' + string_manager[0])
     print('Get slice - ' + string_manager[2:4])
+    print('HashStringManager ' + '-' * 100)
+    print('String - ' + hash_string_manager.string)
+    print(f'Array - {hash_string_manager.array}')
+    hash_string_manager.append('S')
+    print('Append(S) - ' + hash_string_manager.string)
+    print('Get item by index - ' + hash_string_manager[0])
+    print('Get slice - ' + hash_string_manager[2:4])
     print('Stack ' + '-' * 100)
     print(f'Initial stack - {stack.show()}')
     stack.append(string_manager)
