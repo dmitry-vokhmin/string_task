@@ -1,24 +1,26 @@
-from string import BaseString
-from string_manager import StringManager
+from abc import ABC
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
 
 
-class Stack:
-    def __init__(self, elem: BaseString | StringManager):
+class BaseStack(Generic[T], ABC):
+    def __init__(self, elem: T):
         self._stack = [elem]
 
-    def append(self, item: BaseString | StringManager):
+    def append(self, item: T):
         self._stack.append(item)
 
     def delete(self):
         self._stack = self._stack[:-1]
 
-    def show(self):
+    def show(self) -> list[str]:
         return [str(elem) for elem in self._stack]
 
     @property
-    def top_element(self):
+    def top_element(self) -> T:
         return self._stack[-1]
 
     @property
-    def empty(self):
+    def empty(self) -> int:
         return 0 if len(self._stack) else 1

@@ -1,4 +1,4 @@
-from stack import Stack
+from stack import StringStack
 from string import StringType, StringFactory
 from string_manager import StringManager
 
@@ -7,7 +7,7 @@ if __name__ == '__main__':
     hash_string = StringFactory.create(StringType.hash_string, '123456')
     string_manager = StringManager(res_string)
     hash_string_manager = StringManager(hash_string)
-    stack = Stack(res_string)
+    stack = StringStack(res_string)
     print('StringManager ' + '-' * 100)
     print('String - ' + string_manager.string)
     print(f'Array - {string_manager.array}')
